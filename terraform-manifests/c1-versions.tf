@@ -7,16 +7,16 @@ terraform {
       version = ">= 5.0"
     }
     null = {
-      source = "hashicorp/null"
+      source  = "hashicorp/null"
       version = "~> 3.0"
-    }    
+    }
     random = {
-      source = "hashicorp/random"
-      version = "~> 3.0"
-    }            
+      source  = "hashicorp/random"
+      version = "3.6.0"
+    }
   }
   # Adding Backend as S3 for Remote State Storage
-  backend "s3" {}      
+  backend "s3" {}
 }
 
 # Provider Block
@@ -29,7 +29,7 @@ Note-1:  AWS Credentials Profile (profile = "default") configured on your local 
 $HOME/.aws/credentials
 */
 
-# Create Random Pet Resource
+# # Create Random Pet Resource
 resource "random_pet" "this" {
   length = 2
 }
