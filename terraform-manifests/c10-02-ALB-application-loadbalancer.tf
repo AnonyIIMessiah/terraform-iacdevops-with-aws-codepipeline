@@ -104,7 +104,7 @@ resource "aws_lb_target_group_attachment" "external" {
   # for_each = { for k, v in aws_instance.example : k => v }
 
   target_group_arn = module.alb.target_groups["mytg1"].arn
-  target_id        = module.alb.target_groups["mytg1"].id
+  target_id        = data.aws_ami.amzlinux2.id
   port             = 80
 }
 
