@@ -74,7 +74,7 @@ module "alb" {
       # VERY IMPORTANT: We will create aws_lb_target_group_attachment resource separately when we use create_attachment = false, refer above GitHub issue URL.
       ## Github ISSUE: https://github.com/terraform-aws-modules/terraform-aws-alb/issues/316
       ## Search for "create_attachment" to jump to that Github issue solution
-      create_attachment                 = true
+      create_attachment                 = false
       name_prefix                       = "mytg1-"
       protocol                          = "HTTP"
       port                              = 80
@@ -98,3 +98,12 @@ module "alb" {
   }                            # END OF target_groups
   tags = local.common_tags     # ALB Tags
 }                              # End of alb module
+
+
+resource "aws_lb_target_group_attachment" "external" {
+  for_each = { for k, v in aws_instance.example : k => v }
+
+  target_group_arn = module.alb.target_groups["example"].arn
+  target_id        = each.value.id
+  port             = 80
+}
