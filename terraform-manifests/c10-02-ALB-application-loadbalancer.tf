@@ -101,7 +101,7 @@ module "alb" {
 
 
 resource "aws_lb_target_group_attachment" "external" {
-  for_each = { for k, v in aws_instance.example : k => v }
+  for_each = { for k, v in module.ec2_public : k => v }
 
   target_group_arn = module.alb.target_groups["example"].arn
   target_id        = each.value.id
