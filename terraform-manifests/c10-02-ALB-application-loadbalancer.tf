@@ -109,7 +109,7 @@ resource "aws_lb_target_group_attachment" "external" {
 }
 
 resource "aws_instance" "example" {
-  for_each = toset(["1", "2", "3"]) # ¯\_(ツ)_/¯
+  for_each = toset(["1"]) # ¯\_(ツ)_/¯
 
   ami           = data.aws_ami.amzlinux2.id
   instance_type = var.instance_type
