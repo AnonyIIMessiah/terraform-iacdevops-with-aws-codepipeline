@@ -103,8 +103,8 @@ module "alb" {
 resource "aws_lb_target_group_attachment" "external" {
   # for_each = { for k, v in aws_instance.example : k => v }
 
-  target_group_arn = module.alb.target_groups["mygt1"].arn
-  target_id        = module.alb.target_groups["mygt1"].id
+  target_group_arn = module.alb.target_groups["mytg1"].arn
+  target_id        = module.alb.target_groups["mytg1"].id
   port             = 80
 }
 
