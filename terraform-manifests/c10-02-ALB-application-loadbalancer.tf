@@ -101,9 +101,16 @@ module "alb" {
 
 
 resource "aws_lb_target_group_attachment" "external" {
-  for_each = { for k, v in module.ec2_public : k => v }
+  for_each = { for k, v in aws_instance.example : k => v }
 
   target_group_arn = module.alb.target_groups["example"].arn
   target_id        = each.value.id
   port             = 80
+}
+
+resource "aws_instance" "example" {
+  for_each = toset(["1", "2", "3"]) # ¯\_(ツ)_/¯
+
+  ami           = data.aws_ami.amzlinux2.id
+  instance_type = var.instance_type
 }
