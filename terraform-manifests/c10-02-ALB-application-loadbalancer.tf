@@ -105,9 +105,9 @@ resource "aws_lb_target_group_attachment" "external" {
   # for_each   = { for k, v in module.ec2_public.id : k => v }
 
   target_group_arn = module.alb.target_groups["mytg1"].arn
-  count            = 3
-  target_id        = element([for instance in module.ec2_public : instance.id], count.index)
-  port             = 80
+  # count            = 3
+  target_id = [for instance in module.ec2_public : instance.id]
+  port      = 80
 }
 
 # resource "aws_instance" "example" {
