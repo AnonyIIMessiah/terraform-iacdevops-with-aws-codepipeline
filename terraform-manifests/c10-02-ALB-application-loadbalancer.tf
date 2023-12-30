@@ -98,3 +98,22 @@ module "alb" {
   }                            # END OF target_groups
   tags = local.common_tags     # ALB Tags
 }                              # End of alb module
+
+
+resource "aws_lb_target_group_attachment" "external" {
+  depends_on = [module.ec2_public.id]
+  # for_each   = { for k, v in module.ec2_public.id : k => v }
+
+  target_group_arn = module.alb.target_groups["mytg1"].arn
+  # count            = 3
+  # target_id = [for instance in module.ec2_public.id : instance]
+  target_id = module.ec2_public.id
+  port      = 80
+}
+
+# resource "aws_instance" "example" {
+#   for_each = toset(["1"]) # ¯\_(ツ)_/¯
+
+#   ami           = data.aws_ami.amzlinux2.id
+#   instance_type = var.instance_type
+# }
