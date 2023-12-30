@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "my_asg" {
   max_size    = 10
   min_size    = 2
   #min_size = 4 
-  desired_capacity = 3
+  desired_capacity = 4
   #desired_capacity = 4   
   vpc_zone_identifier = module.vpc.private_subnets
   #target_group_arns = module.alb.target_group_arns
