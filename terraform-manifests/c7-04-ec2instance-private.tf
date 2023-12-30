@@ -14,7 +14,7 @@ module "ec2_private" {
   tags          = local.common_tags
 
   # Changes as part of Module version from 2.17.0 to 5.5.0
-  for_each               = toset(["0", "1", "2"])
+  for_each               = toset(["0", "1"])
   subnet_id              = element(module.vpc.private_subnets, tonumber(each.key))
   vpc_security_group_ids = [module.private_sg.security_group_id]
 
