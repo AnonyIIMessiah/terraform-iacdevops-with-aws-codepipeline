@@ -102,7 +102,7 @@ module "alb" {
 
 resource "aws_lb_target_group_attachment" "external" {
   # depends_on = [module.ec2_public.id]
-  for_each = { for k, v in module.ec2_public.id : k => v }
+  # for_each   = { for k, v in module.ec2_public.id : k => v }
 
   target_group_arn = module.alb.target_groups["mytg1"].arn
   # count            = 3
