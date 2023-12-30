@@ -3,7 +3,7 @@ resource "aws_autoscaling_group" "my_asg" {
   #name_prefix = "myasg-"
   name_prefix = "${local.name}-"
   max_size    = 10
-  min_size    = 3
+  min_size    = 2
   #min_size = 4 
   desired_capacity = 3
   #desired_capacity = 4   
