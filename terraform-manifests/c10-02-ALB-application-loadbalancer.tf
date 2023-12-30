@@ -108,7 +108,7 @@ resource "aws_lb_target_group_attachment" "external" {
   # count            = 3
   # target_id = [for instance in module.ec2_public.id : instance]
   # target_id = [for ec2private in module.ec2_private : ec2private.id]
-  target_id = each.value
+  target_id = each.value.id
   port      = 80
 }
 
