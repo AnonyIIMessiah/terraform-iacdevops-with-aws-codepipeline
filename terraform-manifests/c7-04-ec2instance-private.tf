@@ -1,6 +1,6 @@
 # AWS EC2 Instance Terraform Module
 # EC2 Instances that will be created in VPC Private Subnets for App2
-module "ec2_private_frontend" {
+module "ec2_private" {
   depends_on = [module.vpc] # VERY VERY IMPORTANT else userdata webserver provisioning will fail
   source     = "terraform-aws-modules/ec2-instance/aws"
   #version = "2.17.0"
