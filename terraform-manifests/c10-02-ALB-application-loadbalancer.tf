@@ -2,7 +2,7 @@
 module "alb" {
   source = "terraform-aws-modules/alb/aws"
   #version = "5.16.0"
-  version = "9.2.0"
+  version = "9.4.0"
 
   name               = "${local.name}-alb"
   load_balancer_type = "application"
@@ -33,7 +33,7 @@ module "alb" {
       ssl_policy      = "ELBSecurityPolicy-TLS13-1-2-Res-2021-06"
       certificate_arn = module.acm.acm_certificate_arn
 
-      # Fixed Response for Root Context 
+      # Fixed Response for Root Context       
       fixed_response = {
         content_type = "text/plain"
         message_body = "Fixed Static message - for Root Context"
@@ -43,12 +43,15 @@ module "alb" {
       # Load Balancer Rules
       rules = {
         # Rule-1: myapp1-rule
-        myapp1-rule = {
+
+        # Rule-3: myapp3-rule
+        myapp-rule = {
+          priority = 30
           actions = [{
             type = "weighted-forward"
             target_groups = [
               {
-                target_group_key = "mytg1"
+                target_group_key = "mytg"
                 weight           = 1
               }
             ]
@@ -62,22 +65,21 @@ module "alb" {
               values = ["/*"]
             }
           }]
-        } # End of myapp1-rule
-      }   # End Rules Block
-    }     # End my-https-listener Block
-  }       # End Listeners Block
+        } # End of myapp3-rule Block
+      }   # End Rules
+    }     # End Listener-2: my-https-listener
+  }       # End Listeners
 
   # Target Groups
   target_groups = {
-    # Target Group-1: mytg1
-    mytg1 = {
-      # VERY IMPORTANT: We will create aws_lb_target_group_attachment resource separately when we use create_attachment = false, refer above GitHub issue URL.
-      ## Github ISSUE: https://github.com/terraform-aws-modules/terraform-aws-alb/issues/316
-      ## Search for "create_attachment" to jump to that Github issue solution
+
+    # Target Group: mytg       
+    mytg = {
+      # VERY IMPORTANT: We will create aws_lb_target_group_attachment resource separately, refer above GitHub issue URL.
       create_attachment                 = false
-      name_prefix                       = "mytg1-"
+      name_prefix                       = "mytg-"
       protocol                          = "HTTP"
-      port                              = 80
+      port                              = 8080
       target_type                       = "instance"
       deregistration_delay              = 10
       load_balancing_cross_zone_enabled = false
@@ -85,36 +87,27 @@ module "alb" {
       health_check = {
         enabled             = true
         interval            = 30
-        path                = "/"
+        path                = "/login"
         port                = "traffic-port"
         healthy_threshold   = 3
         unhealthy_threshold = 3
         timeout             = 6
         protocol            = "HTTP"
         matcher             = "200-399"
-      }                        # End of Health Check Block
+      }
       tags = local.common_tags # Target Group Tags 
-    }                          # END of Target Group-1: mytg1
+    }                          # END of Target Group-3: mytg
   }                            # END OF target_groups
   tags = local.common_tags     # ALB Tags
-}                              # End of alb module
-
-
-resource "aws_lb_target_group_attachment" "external" {
-  # depends_on = [module.ec2_public.id]
-  for_each = { for k, v in module.ec2_private : k => v }
-
-  target_group_arn = module.alb.target_groups["mytg1"].arn
-  # count            = 3
-  # target_id = [for instance in module.ec2_public.id : instance]
-  # target_id = [for ec2private in module.ec2_private : ec2private.id]
-  target_id = each.value.id
-  port      = 80
 }
 
-# resource "aws_instance" "example" {
-#   for_each = toset(["1"]) # ¯\_(ツ)_/¯
 
-#   ami           = data.aws_ami.amzlinux2.id
-#   instance_type = var.instance_type
-# }
+# mytg: LB Target Group Attachment
+resource "aws_lb_target_group_attachment" "mytg" {
+  for_each         = { for k, v in module.ec2_private : k => v }
+  target_group_arn = module.alb.target_groups["mytg"].arn
+  target_id        = each.value.id
+  port             = 8080
+}
+
+

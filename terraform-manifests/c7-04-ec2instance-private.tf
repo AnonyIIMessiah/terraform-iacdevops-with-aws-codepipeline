@@ -12,7 +12,7 @@ module "ec2_private" {
   key_name      = var.instance_keypair
   #user_data = file("${path.module}/app3-ums-install.tmpl") - THIS WILL NOT WORK, use Terraform templatefile function as below.
   #https://www.terraform.io/docs/language/functions/templatefile.html
-  user_data = templatefile("2_backend.tmpl", { rds_db_endpoint = module.rdsdb.db_instance_address })
+  user_data = templatefile("app.tmpl", { rds_db_endpoint = module.rdsdb.db_instance_address })
   tags      = local.common_tags
 
   # Changes as part of Module version from 2.17.0 to 5.5.0

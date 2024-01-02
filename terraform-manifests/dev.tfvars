@@ -18,5 +18,5 @@ instance_keypair       = "terraform-key"
 private_instance_count = 2
 
 # DNS Name
-dns_name = "devdemo5.devopscamp.shop"
+dns_name = "dev.devopscamp.shop"
 
