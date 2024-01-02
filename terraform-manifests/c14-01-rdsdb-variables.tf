@@ -11,12 +11,12 @@ variable "db_instance_identifier" {
   description = "AWS RDS Database Instance Identifier"
   type        = string
 }
-# DB Username - Enable Sensitive flag
+
 variable "db_username" {
   description = "AWS RDS Database Administrator Username"
   type        = string
 }
-# DB Password - Enable Sensitive flag
+
 variable "db_password" {
   description = "AWS RDS Database Administrator Password"
   type        = string

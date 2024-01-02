@@ -11,7 +11,6 @@ module "acm" {
     var.dns_name
   ]
   tags = local.common_tags
-  # Validation Method
   validation_method   = "DNS"
   wait_for_validation = true
 }

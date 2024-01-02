@@ -20,3 +20,11 @@ private_instance_count = 2
 # DNS Name
 dns_name = "dev.devopscamp.shop"
 
+
+# RDS Database Variables
+db_name                = "webappdb-dev"
+db_instance_identifier = "webappdb-dev"
+db_username            = "dbadmin"
+db_password            = "dbpassword11"
+
+

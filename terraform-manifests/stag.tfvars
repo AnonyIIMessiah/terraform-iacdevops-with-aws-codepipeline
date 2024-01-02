@@ -1,6 +1,5 @@
-# Environment
-environment = "stag"
-# VPC Variables
+
+environment                            = "stag"
 vpc_name                               = "myvpc"
 vpc_cidr_block                         = "10.0.0.0/16"
 vpc_availability_zones                 = ["us-east-1a", "us-east-1b", "us-east-1c"]
@@ -19,4 +18,11 @@ private_instance_count = 2
 
 # DNS Name
 dns_name = "stag.devopscamp.shop"
+
+
+# RDS Database Variables
+db_name                = "webappdb-stag"
+db_instance_identifier = "webappdb-stag"
+db_username            = "dbadmin"
+db_password            = "dbpassword11"
 

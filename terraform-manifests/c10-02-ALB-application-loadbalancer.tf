@@ -10,12 +10,9 @@ module "alb" {
   subnets            = module.vpc.public_subnets
   security_groups    = [module.loadbalancer_sg.security_group_id]
 
-  # For example only
-  enable_deletion_protection = false
 
-  # Listeners
   listeners = {
-    # Listener-1: my-http-https-redirect
+
     my-http-https-redirect = {
       port     = 80
       protocol = "HTTP"
@@ -24,9 +21,7 @@ module "alb" {
         protocol    = "HTTPS"
         status_code = "HTTP_301"
       }
-    } # End my-http-https-redirect Listener
-
-    # Listener-2: my-https-listener
+    }
     my-https-listener = {
       port            = 443
       protocol        = "HTTPS"
@@ -42,9 +37,7 @@ module "alb" {
 
       # Load Balancer Rules
       rules = {
-        # Rule-1: myapp1-rule
 
-        # Rule-3: myapp3-rule
         myapp-rule = {
           priority = 30
           actions = [{
@@ -65,17 +58,14 @@ module "alb" {
               values = ["/*"]
             }
           }]
-        } # End of myapp3-rule Block
-      }   # End Rules
-    }     # End Listener-2: my-https-listener
-  }       # End Listeners
+        }
+    } }
+  }
 
   # Target Groups
   target_groups = {
-
-    # Target Group: mytg       
     mytg = {
-      # VERY IMPORTANT: We will create aws_lb_target_group_attachment resource separately, refer above GitHub issue URL.
+
       create_attachment                 = false
       name_prefix                       = "mytg-"
       protocol                          = "HTTP"
@@ -95,14 +85,14 @@ module "alb" {
         protocol            = "HTTP"
         matcher             = "200-399"
       }
-      tags = local.common_tags # Target Group Tags 
-    }                          # END of Target Group-3: mytg
-  }                            # END OF target_groups
-  tags = local.common_tags     # ALB Tags
+      tags = local.common_tags
+    }
+  }
+  tags = local.common_tags
 }
 
 
-# mytg: LB Target Group Attachment
+
 resource "aws_lb_target_group_attachment" "mytg" {
   for_each         = { for k, v in module.ec2_private : k => v }
   target_group_arn = module.alb.target_groups["mytg"].arn
