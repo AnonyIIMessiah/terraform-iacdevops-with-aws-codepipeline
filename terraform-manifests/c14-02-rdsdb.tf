@@ -1,8 +1,6 @@
 # Create AWS RDS Database
 module "rdsdb" {
-  source = "terraform-aws-modules/rds/aws"
-  #version = "2.34.0"
-  #version = "3.0.0"
+  source  = "terraform-aws-modules/rds/aws"
   version = "6.3.0"
 
   identifier = var.db_instance_identifier
@@ -25,7 +23,7 @@ module "rdsdb" {
   engine_version       = "8.0.35"
   family               = "mysql8.0" # DB parameter group
   major_engine_version = "8.0"      # DB option group
-  instance_class       = "db.t3.micro"
+  instance_class       = "db.t3.large"
 
   allocated_storage     = 20
   max_allocated_storage = 100
