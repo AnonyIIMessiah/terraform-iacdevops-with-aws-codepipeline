@@ -10,7 +10,7 @@ module "alb" {
   subnets            = module.vpc.public_subnets
   security_groups    = [module.loadbalancer_sg.security_group_id]
 
-
+  enable_deletion_protection = false
   listeners = {
 
     my-http-https-redirect = {
